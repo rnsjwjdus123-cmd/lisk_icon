@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 AI 서비스 딕셔너리</title>
+    <style>
+        /* --- CSS 변수 설정 (브라운 테마) --- */
+        :root {
+            --bg-color: #F9F5F0;         /* 아주 연한 베이지 */
+            --card-bg: #FFFFFF;          /* 카드 배경 */
+            --primary-brown: #4A3B32;    /* 짙은 고동색 (텍스트) */
+            --secondary-brown: #8D6E63;  /* 중간 갈색 (강조) */
+            --accent-brown: #D7CCC8;     /* 연한 갈색 (배경 장식) */
+            --star-color: #FFB300;       /* 별점 색상 */
+            --hover-color: #5D4037;      /* 버튼 호버 색상 */
+        }
+
+        /* --- 기본 스타일 --- */
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-brown);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; padding: 0; }
+
+        /* --- 헤더 및 네비게이션 --- */
+        header {
+            background-color: var(--primary-brown);
+            color: #fff;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        header p {
+            margin-top: 0.5rem;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        /* ✅ 추가: 검색 섹션 스타일 */
+        .search-container {
+            background-color: var(--primary-brown);
+            padding: 0 1rem 2rem 1rem;
+            text-align: center;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 600px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: 2px solid var(--secondary-brown);
+            border-radius: 30px;
+            outline: none;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .search-box:focus {
+            border-color: var(--accent-brown);
+            box-shadow: 0 4px 15px rgba(215, 204, 200, 0.4);
+        }
+
+        nav {
+            background-color: var(--secondary-brown);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 0;
+            padding: 0.5rem;
+        }
+
+        nav li { margin: 0 10px; }
+
+        nav a {
+            color: #fff;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: background 0.3s;
+            font-size: 0.95rem;
+        }
+
+        nav a:hover {
+            background-color: var(--primary-brown);
+        }
+
+        /* --- 메인 컨텐츠 --- */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 80px; /* 네비게이션 바 높이만큼 여백 */
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            border-bottom: 3px solid var(--secondary-brown);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            color: var(--primary-brown);
+        }
+
+        /* --- 그리드 레이아웃 --- */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* --- 카드 스타일 --- */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--accent-brown);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(74, 59, 50, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(74, 59, 50, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            background-color: var(--bg-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            border: 1px solid var(--accent-brown);
+            overflow: hidden; 
+        }
+
+        .app-icon {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .stars {
+            color: var(--star-color);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: var(--accent-brown);
+            color: var(--primary-brown);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            align-self: flex-start;
+        }
+
+        .tag-price {
+            display: inline-block;
+            background-color: #FFF9C4; 
+            color: #795548;           
+            padding: 0.1rem 0.4rem;    
+            border-radius: 4px;
+            font-size: 0.65rem;        
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            margin-left: 4px;
+            align-self: flex-start;
+            vertical-align: middle;    
+            border: 1px solid #F0E68C; 
+        }
+
+        .description {
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            flex-grow: 1; 
+        }
+
+        .highlight-box {
+            background-color: #FAF8F5;
+            border-left: 3px solid var(--secondary-brown);
+            padding: 0.8rem;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            color: #555;
+        }
+
+        .highlight-box strong {
+            color: var(--primary-brown);
+        }
+
+        .btn-link {
+            display: block;
+            text-align: center;
+            background-color: var(--secondary-brown);
+            color: white;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: auto;
+            transition: background 0.3s;
+        }
+
+        .btn-link:hover {
+            background-color: var(--hover-color);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--primary-brown);
+            color: var(--accent-brown);
+            margin-top: 4rem;
+            font-size: 0.9rem;
+        }
+
+        /* --- 반응형 --- */
+        @media (max-width: 768px) {
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            nav ul {
+                font-size: 0.8rem;
+            }
+        }
+        /* --- 해시태그 스타일 --- */
+        .hashtags {
+            font-size: 0.75rem;
+            color: var(--secondary-brown);
+            margin-top: 0.8rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .hashtags::before {
+            content: '';
+            display: block;
+            height: 1px;
+            background: var(--accent-brown);
+            margin-bottom: 0.6rem;
+        }
+
+        /* --- AI 추가 폼 스타일 --- */
+        .add-ai-section {
+            background: var(--card-bg);
+            border: 2px solid var(--accent-brown);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 10px rgba(74, 59, 50, 0.08);
+        }
+
+        .add-ai-toggle {
+            background: var(--secondary-brown);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .add-ai-toggle:hover {
+            background: var(--hover-color);
+        }
+
+        .add-ai-form-container {
+            display: none;
+            margin-top: 1.5rem;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .add-ai-form-container.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: var(--primary-brown);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid var(--accent-brown);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-submit,
+        .btn-reset {
+            flex: 1;
+            padding: 0.7rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-submit {
+            background: var(--secondary-brown);
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background: var(--hover-color);
+        }
+
+        .btn-reset {
+            background: #f5f5f5;
+            color: var(--primary-brown);
+            border: 1px solid var(--accent-brown);
+        }
+
+        .btn-reset:hover {
+            background: #e0e0e0;
+        }
+
+        .user-added-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>AI Service Dictionary</h1>
+    <p>업무 효율을 극대화하는 2026년 필수 AI 툴 모음</p>
+</header>
+
+<div class="search-container">
+    <input type="text" id="searchInput" class="search-box" placeholder="서비스 이름이나 키워드를 검색해보세요... (예: ChatGPT, 영상, 무료)">
+</div>
+
+<nav>
+    <ul>
+        <li><a href="#writing">글쓰기/일반</a></li>
+        <li><a href="#meeting">회의/기록</a></li>
+        <li><a href="#avatar">AI 아바타/영상</a></li>
+        <li><a href="#comic">만화/스토리보드</a></li>
+        <li><a href="#music">음악 생성</a></li>
+    </ul>
+</nav>
+
+<main>
+
+    <section id="writing">
+        <h2 class="section-title">✍️ 글쓰기 및 전반적인 작업</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=chat.openai.com" alt="ChatGPT icon">
+                    </div>
+                    <h3 class="card-title">ChatGPT</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">올라운더 / 코딩 / 분석</span>
+                    <span class="tag-price">무료 / 유료 구독</span>
+                </div>
+                <p class="description">논리 추론과 데이터 분석의 표준입니다. GPT-4o 기반의 멀티모달 능력이 강력하며 Python 라이브러리 호환성이 독보적입니다.</p>
+                <div class="highlight-box">
+                    <strong>Tip:</strong> 복잡한 파이썬 로직 설계나 SQL 쿼리 생성 시 가장 안정적입니다.
+                </div>
+                <p class="hashtags" data-hashtags="리서치 요약 검색 팩트체크 글쓰기 브레인스토밍 대화">#리서치 #요약 #검색 #팩트체크 #글쓰기 #브레인스토밍 #대화</p>                
+                <a href="https://chat.openai.com" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=claude.ai" alt="Claude icon">
+                    </div>
+                    <h3 class="card-title">Claude</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">감성 / 긴글 요약</span>
+                    <span class="tag-price">무료 / 유료 구독</span>
+                </div>
+                <p class="description">가장 사람다운 자연스러운 문체를 가졌습니다. 긴 문서를 읽고 맥락을 놓치지 않는 '기억력'이 탁월하여 최고점을 줍니다.</p>
+                <div class="highlight-box">
+                    <strong>Tip:</strong> 블로그 포스팅, 이메일 초안 등 감성적인 글쓰기에 최적입니다.
+                </div>
+                <p class="hashtags" data-hashtags="긴글 분석 코딩 문서작성 전문성 프롬프팅">#긴글 #분석 #코딩 #문서작성 #전문성 #프롬프팅</p>                
+                <a href="https://claude.ai" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=gemini.google.com" alt="Gemini icon">
+                    </div>
+                    <h3 class="card-title">Gemini</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">구글 생태계 / 실시간</span>
+                    <span class="tag-price">무료 / 유료 구독</span>
+                </div>
+                <p class="description">구글 워크스페이스(문서, 시트) 및 유튜브와 실시간 연동이 가능한 치트키입니다. 대용량 컨텍스트 처리에 능합니다.</p>
+                <div class="highlight-box">
+                    <strong>Tip:</strong> 유튜브 영상 내용을 기반으로 글을 쓰거나 구글 시트 데이터 분석에 유리합니다.
+                </div>
+                <p class="hashtags" data-hashtags="유튜브 링크분석 멀티모달 PDF 실시간정보">#유튜브 #링크분석 #멀티모달 #PDF #실시간정보</p>                
+                <a href="https://gemini.google.com" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=perplexity.ai" alt="Perplexity icon">
+                    </div>
+                    <h3 class="card-title">Perplexity</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">리서치 / 검색 혁명</span>
+                    <span class="tag-price">무료 / 프로 버전</span>
+                </div>
+                <p class="description">실시간 검색 기반 답변과 명확한 출처(Source)를 제시합니다. 구글링 시간을 90% 줄여주어 리서치 업무에 대체 불가입니다.</p>
+                <div class="highlight-box">
+                    <strong>Tip:</strong> 최신 기술 트렌드 조사나 팩트 체크 업무에 사용하세요.
+                </div>
+                <p class="hashtags" data-hashtags="검색엔진 실시간 리서치 출처 참고문헌 뉴스">#검색엔진 #실시간 #리서치 #출처 #참고문헌 #뉴스</p>                
+                <a href="https://www.perplexity.ai" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=jasper.ai" alt="Jasper icon">
+                    </div>
+                    <h3 class="card-title">Jasper / Anyword</h3>
+                </div>
+                <div class="stars">⭐⭐⭐</div>
+                <div>
+                    <span class="tag">마케팅 / 카피라이팅</span>
+                    <span class="tag-price">유료 (체험판 제공)</span>
+                </div>
+                <p class="description">마케팅 성과에 특화된 글을 씁니다. 클릭률 높은 광고 카피나 블로그 제목을 데이터 기반으로 추천합니다.</p>
+                <div class="highlight-box">
+                    <strong>Note:</strong> 최근 일반 LLM들의 성능 향상으로 범용성은 다소 떨어짐.
+                </div>
+                <p class="hashtags" data-hashtags="IDE 코드에디터 자동완성 디버깅 개발도구 통합환경">#IDE #코드에디터 #자동완성 #디버깅 #개발도구 #통합환경</p>                
+                <a href="#" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="meeting">
+        <h2 class="section-title">🎙️ 회의 / 기록 / 요약</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=clovanote.naver.com" alt="ClovaNote icon">
+                    </div>
+                    <h3 class="card-title">ClovaNote</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">한국어 최적화</span>
+                    <span class="tag-price">무료 (월 한도 있음)</span>
+                </div>
+                <p class="description">한국어 인식률이 압도적이며 화자 분리(누가 말했인지) 기능이 뛰어납니다. 국내 업무 환경에서 1위입니다.</p>
+                <a href="#" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=granola.so" alt="Granola icon">
+                    </div>
+                    <h3 class="card-title">Granola</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">노트 인핸서 / 추천</span>
+                    <span class="tag-price">무료 체험 / 유료</span>
+                </div>
+                <p class="description">'노트 테이커'가 아니라 '노트 인핸서'입니다. 대충 쓴 메모를 녹음본과 대조하여 깔끔한 비즈니스 문서로 다듬어줍니다.</p>
+                <a href="#" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=notion.so" alt="Notion icon">
+                    </div>
+                    <h3 class="card-title">Notion AI</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">워크플로우 통합</span>
+                    <span class="tag-price">유료 추가 기능</span>
+                </div>
+                <p class="description">회의록을 적으면 즉시 요약하고 'Action Item'을 리스트업합니다. 문서 관리와 요약을 한곳에서 해결합니다.</p>
+                <a href="#" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=fathom.video" alt="Fathom icon">
+                    </div>
+                    <h3 class="card-title">Fathom</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">영상 하이라이트</span>
+                    <span class="tag-price">무료 체험 / 유료</span>
+                </div>
+                <p class="description">회의 중 '중요' 버튼을 누르면 그 부분만 클립으로 따줍니다. 무료 플랜이 강력하며 협업 효율을 극대화합니다.</p>
+                <p class="hashtags" data-hashtags="하이라이트 회의요약 중요포인트 스니펫 자동저장">#하이라이트 #회의요약 #중요포인트 #스니펫 #자동저장</p>                
+                <a href="#" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=daglo.ai" alt="Daglo icon">
+                    </div>
+                    <h3 class="card-title">다글로 (daglo)</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">유튜브 헌터 / 리서치</span>
+                    <span class="tag-price">무료 (월 한도 있음)</span>
+                </div>
+                <p class="description">유튜브 링크만 넣어도 대본을 추출해줍니다. 영상 콘텐츠 리서치 시 속도와 정확도가 뛰어납니다.</p>
+                <a href="#" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+
+             <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=fireflies.ai" alt="Fireflies icon">
+                    </div>
+                    <h3 class="card-title">Fireflies.ai / Otter</h3>
+                </div>
+                <div class="stars">⭐⭐⭐</div>
+                <div>
+                    <span class="tag">대화 분석 / 영어권</span>
+                    <span class="tag-price">무료 체험 / 유료</span>
+                </div>
+                <p class="description">누가 말을 많이 했는지, 회의 분위기(긍정/부정)는 어땠는지 데이터로 보여줍니다. (한국어는 다소 아쉬움)</p>
+                <p class="hashtags" data-hashtags="실시간전사 회의 음성인식 협업 공유 영어">#실시간전사 #회의 #음성인식 #협업 #공유 #영어</p>                
+                <a href="#" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="avatar">
+        <h2 class="section-title">👤 AI 아바타 / 영상 / 음성</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=elevenlabs.io" alt="ElevenLabs icon">
+                    </div>
+                    <h3 class="card-title">ElevenLabs</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">목소리의 신 / 감정</span>
+                    <span class="tag-price">부분 유료 (크레딧)</span>
+                </div>
+                <p class="description">현존 AI 중 가장 감정이 실린 목소리를 만듭니다. 웃음소리, 한숨까지 재현하여 오디오북/내레이션에 필수입니다.</p>
+                <a href="#" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=heygen.com" alt="HeyGen icon">
+                    </div>
+                    <h3 class="card-title">HeyGen</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">입모양 마법 / 디지털 분신</span>
+                    <span class="tag-price">부분 유료 (크레딧)</span>
+                </div>
+                <p class="description">사진 한 장으로 입 모양을 맞추는 기술력이 가장 앞서 있습니다. Voice Cloning 기능이 강력합니다.</p>
+                <p class="hashtags" data-hashtags="아바타 영상제작 립싱크 다국어 마케팅 홍보">#아바타 #영상제작 #립싱크 #다국어 #마케팅 #홍보</p>                
+                <a href="#" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=synthesia.io" alt="Synthesia icon">
+                    </div>
+                    <h3 class="card-title">Synthesia 2.0</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">기업 교육용 / 프로페셔널</span>
+                    <span class="tag-price">유료 구독제</span>
+                </div>
+                <p class="description">보디 랭귀지(손동작, 어깨)가 매우 자연스러워 공식적인 사내 교육 영상 제작에 최적화되어 있습니다.</p>
+                <p class="hashtags" data-hashtags="기업교육 프로페셔널 보디랭귀지 사내교육 공식영상">#기업교육 #프로페셔널 #보디랭귀지 #사내교육 #공식영상</p>                
+                <a href="#" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=hume.ai" alt="Hume AI icon">
+                    </div>
+                    <h3 class="card-title">Hume AI</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">감정 반응 / 공감</span>
+                    <span class="tag-price">무료 체험 / 유료</span>
+                </div>
+                <p class="description">사용자의 목소리 톤에서 감정을 읽고 공감하며 반응하는 미래지향적 아바타입니다.</p>
+                <p class="hashtags" data-hashtags="감정인식 공감 목소리톤 미래형 AI대화 반응형">#감정인식 #공감 #목소리톤 #미래형 #AI대화 #반응형</p>                
+                <a href="#" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="comic">
+        <h2 class="section-title">🎨 AI 만화 / 스토리보드</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=dashtoon.com" alt="Dashtoon icon">
+                    </div>
+                    <h3 class="card-title">Dashtoon</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">캐릭터 유지력 / 웹툰</span>
+                    <span class="tag-price">유료 (코인제)</span>
+                </div>
+                <p class="description">캐릭터 일관성(Consistency) 유지 기능이 강력하여 웹툰 제작에 최적화된 올인원 플랫폼입니다.</p>
+                <p class="hashtags" data-hashtags="웹툰 캐릭터일관성 만화제작 스토리텔링 창작도구">#웹툰 #캐릭터일관성 #만화제작 #스토리텔링 #창작도구</p>                
+                <a href="#" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=lumalabs.ai" alt="Luma icon">
+                    </div>
+                    <h3 class="card-title">Luma Dream Machine</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">역동성 / 스토리보드 영상화</span>
+                    <span class="tag-price">일일 무료 / 구독</span>
+                </div>
+                <p class="description">정적인 만화 컷을 역동적인 영화 장면으로 시뮬레이션해줍니다. 퀄리티가 현존 최고 수준입니다.</p>
+                <p class="hashtags" data-hashtags="영상화 스토리보드 역동성 영화장면 시뮬레이션 애니메이션">#영상화 #스토리보드 #역동성 #영화장면 #시뮬레이션 #애니메이션</p>                
+                <a href="#" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=napkin.ai" alt="NapkinAI icon">
+                    </div>
+                    <h3 class="card-title">NapkinAI / StoryTribe</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">비즈니스 시각화 / 도식</span>
+                    <span class="tag-price">무료 체험 / 유료</span>
+                </div>
+                <p class="description">텍스트를 즉시 비주얼 차트나 도식으로 바꿔줍니다. 복잡한 워크플로우 설명 시 업무 효율이 높습니다.</p>
+                <p class="hashtags" data-hashtags="비즈니스시각화 차트 도식 워크플로우 다이어그램 인포그래픽">#비즈니스시각화 #차트 #도식 #워크플로우 #다이어그램 #인포그래픽</p>                
+                <a href="#" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=comicsmaker.ai" alt="ComicsMaker icon">
+                    </div>
+                    <h3 class="card-title">ComicsMaker.ai</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">스케치 변환</span>
+                    <span class="tag-price">무료 체험 / 유료</span>
+                </div>
+                <p class="description">조잡한 스케치(졸라맨)를 AI가 인식해 고퀄리티 만화 화풍으로 바꿔주는 기능이 일품입니다.</p>
+                <p class="hashtags" data-hashtags="스케치변환 졸라맨 만화화풍 드로잉 낙서 업스케일">#스케치변환 #졸라맨 #만화화풍 #드로잉 #낙서 #업스케일</p>                
+                <a href="#" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=anifusion.ai" alt="Anifusion icon">
+                    </div>
+                    <h3 class="card-title">ComicAI / Anifusion</h3>
+                </div>
+                <div class="stars">⭐⭐⭐</div>
+                <div>
+                    <span class="tag">창작 보조</span>
+                    <span class="tag-price">무료 체험 / 유료</span>
+                </div>
+                <p class="description">스토리를 입력하면 레이아웃을 잡아주거나 콘티 생성을 돕습니다. (범용성에서 약간 아쉬움)</p>
+                <p class="hashtags" data-hashtags="창작보조 콘티 레이아웃 스토리입력 만화기획">#창작보조 #콘티 #레이아웃 #스토리입력 #만화기획</p>                
+                <a href="#" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+        </div>
+    </section>
+
+     <section id="music">
+        <h2 class="section-title">🎵 음악 생성 및 사운드 작업</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=suno.com" alt="Suno icon">
+                    </div>
+                    <h3 class="card-title">Suno</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">대중적 / 감성 / K-Pop</span>
+                    <span class="tag-price">일일 무료 / 구독</span>
+                </div>
+                <p class="description">한국어 가사 전달력과 멜로디의 감수성이 가장 뛰어난 AI 작곡가입니다. V5 모델의 'Persona' 기능으로 일관된 목소리의 앨범 제작이 가능합니다.</p>
+                <div class="highlight-box">
+                    <strong>Tip:</strong> 국악과 트랩을 섞는 등 창의적인 '장르 혼합(Fusion)'에서 가장 빛을 발합니다.
+                </div>
+                <p class="hashtags" data-hashtags="작곡 케이팝 한국어가사 앨범제작 보컬 장르퓨전">#작곡 #케이팝 #한국어가사 #앨범제작 #보컬 #장르퓨전</p>                
+                <a href="https://suno.com" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=udio.com" alt="Udio icon">
+                    </div>
+                    <h3 class="card-title">Udio / Mureka</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">스튜디오 퀄리티 / 부분 수정</span>
+                    <span class="tag-price">일일 무료 / 구독</span>
+                </div>
+                <p class="description">48kHz 스테레오의 압도적인 고음질을 자랑합니다. 특정 구간만 정교하게 다시 만드는 'Inpainting' 기능은 프로급 엔지니어링을 가능케 합니다.</p>
+                <div class="highlight-box">
+                    <strong>Tip:</strong> 악기 소리가 뭉개지지 않는 '스튜디오급' 사운드가 필요할 때 최선의 선택입니다.
+                </div>
+                <p class="hashtags" data-hashtags="고음질 스테레오 인페인팅 부분수정 프로덕션 믹싱">#고음질 #스테레오 #인페인팅 #부분수정 #프로덕션 #믹싱</p>                
+                <a href="https://udio.com" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-box">
+                        <img class="app-icon" src="https://www.google.com/s2/favicons?sz=64&domain_url=stableaudio.com" alt="Stable Audio icon">
+                    </div>
+                    <h3 class="card-title">Stable Audio</h3>
+                </div>
+                <div class="stars">⭐⭐⭐⭐</div>
+                <div>
+                    <span class="tag">전문가용 / 샘플 소스</span>
+                    <span class="tag-price">무료 체험 / 구독</span>
+                </div>
+                <p class="description">가사보다는 소리의 파형과 질감에 집중한 툴입니다. 내가 허밍한 멜로디를 풀 오케스트라로 바꾸는 등 작곡가들을 위한 고품질 루프 생성에 특화되어 있습니다.</p>
+                <div class="highlight-box">
+                    <strong>Tip:</strong> 특정 시대의 음향 장비 질감을 그대로 재현하는 '스타일 충실도'가 매우 높습니다.
+                </div>
+                <p class="hashtags" data-hashtags="샘플소스 루프 오케스트라 작곡가 파형 질감">#샘플소스 #루프 #오케스트라 #작곡가 #파형 #질감</p>                
+                <a href="https://www.stableaudio.com" target="_blank" class="btn-link">서비스 바로가기</a>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>© 2026 AI Service Dictionary based on user data. All rights reserved.</p>
+</footer>
+
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const cards = document.querySelectorAll('.card');
+
+    searchInput.addEventListener('input', function() {
+        const query = searchInput.value.toLowerCase();
+
+        cards.forEach(card => {
+            // 제목, 설명, 태그 텍스트를 모두 합쳐서 검색 대상에 포함
+            const content = card.innerText.toLowerCase();
+            
+            if (content.includes(query)) {
+                card.style.display = 'flex'; // 보이기
+            } else {
+                card.style.display = 'none'; // 숨기기
+            }
+        });
+
+        // 만약 섹션 내의 모든 카드가 숨겨졌다면 섹션 타이틀도 숨기는 로직 (선택사항)
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
+            const visibleCards = section.querySelectorAll('.card[style="display: flex;"]');
+            if (visibleCards.length === 0 && query !== "") {
+                section.style.display = 'none'
+            } else {
+                section.style.display = 'block';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
